@@ -9,7 +9,7 @@ let errors;
 var currentSentence = sentences[0];
 var currentLetter = currentSentence[0];
 
-var currentLetterDiv = $("#next-letter");
+var currentLetterDiv = $("#target-letter");
 currentLetterDiv.text(currentLetter);
 $("#words").append(sentences[sentenceCounter]);
 
@@ -21,14 +21,15 @@ $(document).ready(()=>{
     lower = $("#keyboard-lower-container");
     sentenceContainer = $('#sentence');
 
-
+   
 });
 
 $("#sentence").append(currentSentence);
-$("#next-letter").append(currentLetter);
+$("#target-letter").append(currentLetter);
+
+
 
 $(document).on('keydown keyup', (e)=> {
-    
     if(e.keyCode === 16){
         if(e.type === 'keydown'){
          lower.hide();
@@ -40,12 +41,45 @@ $(document).on('keydown keyup', (e)=> {
     }
 });
 
+$(document).keydown(function (e) {
+    if (e.keyCode + 32) {
+        $("#" + (event.which + 32)).addClass('highlight');
+    }
+    $("#" + (event.which)).addClass('highlight');
+    $("#32" + (event.which)).addClass('highlight');
+});
+
+$(document).keyup(function (e) {
+    if (e.keyCode + 32) {
+        $("#" + (event.which + 32)).removeClass('highlight');
+    }
+    $("#32" + (event.which)).removeClass('highlight');
+    $("#" + (event.which)).removeClass('highlight');
+
+
+});
+
+
+
+ $(document).keypress(function (event) {
+        var keyPress = event.which;
+        $('#' + keyPress).addClass('highlight');
+        var currentSentence = sentences[sentenceCounter];
+        var currentLetter = currentSentence[letterCounter];
+        // if (start == undefined) { // if there is no value in start, set it to = the event.timeStamp
+        //     start = event.timeStamp;
+        // }
+ });
+
+$("#prompt-container").css("left", "+=17.5px");
+
 letterCounter++;
 var nextLetter = currentSentence[letterCounter];
 currentLetterDiv.text(nextLetter);
-const errorCounter = (e) => {
+
+document.onkeypress = function(e) {
     if (letterCounter < currentSentence.length - 1) { 
-        if (event.which === currentLetter.charCodeAt()) { 
+        if (e.which === currentLetter.charCodeAt()) { 
             $("#feedback").append("<span class = 'glyphicon glyphicon-ok'></span>"); 
         } else {
             $("#feedback").append("<span class = 'glyphicon glyphicon-remove'></span>");
@@ -57,6 +91,7 @@ const errorCounter = (e) => {
 if (letterCounter == currentSentence.length) { 
     $("#sentence").empty(); 
     sentenceCounter++;
+    console.log(sentenceCounter)
     currentSentence = sentences[sentenceCounter]; 
 
     $("#sentence").append(sentences[sentenceCounter]); 
@@ -65,50 +100,14 @@ if (letterCounter == currentSentence.length) {
         var nextLetter = currentSentence[letterCounter];
     }
     currentLetterDiv.text(nextLetter); 
-    $("#sentence").css({ left: 17 }); 
+    $("#prompt-container").css({ left: 17 }); 
     $("#feedback").empty(); 
 }
-
-//let trueCode = e.keyCode;
-
-    //  if(!e.shift & e.keyCode >= 65 && e.keyCode <= 90){
-
-    //  }
-//      $('#' + keyPress).addClass('highlight');    
-//      console.log(keyPress);
-//     } 
-    
-//     var currentSentence = sentences[sentenceCounter];
-//     var currentLetter = currentSentence[letterCounter];
-
-// })
 
 
 // if the shift key is pressed as false & keycode >=65 & <= 90..then would be truecode += 32....set var to key and set # to target the ids with truecode..if keydown then hightlight or add class.verify that the right key was pressed. if keytype == keyup...if the truecode equal the targetkeycode..the lettercounter should be equal to the sentences[senterncecounter].length{
 // sentencecounter ++....
 // }
-
-
-
-$(document).keydown(function(e) {
-   if (e.keyCode + 32) {
-        $("#" + (event.which + 32)).addClass('highlight'); 
-    }
-    $("#" + (event.which)).addClass('highlight');
-    $("#32" + (event.which)).addClass('highlight');
-        //console.log(sentenceCounter)
-});
-
-$(document).keyup(function(e) {
- if (e.keyCode + 32) {
-        $("#" + (event.which + 32)).removeClass('highlight');
-    }
-    $("#32" + (event.which)).removeClass('highlight');
-    $("#" + (event.which)).removeClass('highlight');
-
-
-});
-
 
 /*
 create a function to hold the split of the array. set the sentencecounter to 0..empty the sentencecontainer or div..split the sentence..create and map the slipt sentence and nest within the div(given)
@@ -117,20 +116,20 @@ create a function to hold the split of the array. set the sentencecounter to 0..
 
 //const key = `#${trueCode}`;
 
-const configureSentence = () => {
-sentence = sentences[sentenceCounter];
+// const configureSentence = () => {
+// sentence = sentences[sentenceCounter];
 
-sentenceContainer.empty();
+// sentenceContainer.empty();
 
-let splitSentence = sentences.split('');
+// let splitSentence = sentences.split('');
 
-let configuredSentence = splitSentence.map((character,index) => {
-            return `<span id="target-${index}">${character}</span>`
-        }).join('');
-        console.log(splitSentence)
+// let configuredSentence = splitSentence.map((character,index) => {
+//             return `<span id="target-${index}">${character}</span>`
+//         }).join('');
+//         console.log(splitSentence)
 
-sentenceContainer.append(configuredSentence);
-}
+// sentenceContainer.append(configuredSentence);
+// }
 /*
         to knwo what key to press...create the function..targetletter and use target with the letter counter..if ;ettercounter != 0..target-lettercounter - 1.removeclass...targetkeycode = trgetletter.text.charcode0...targetletter.addclass
 */
